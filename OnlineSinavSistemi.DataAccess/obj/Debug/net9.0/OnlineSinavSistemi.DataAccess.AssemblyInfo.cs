@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OnlineSinavSistemi.DataAccess")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b00e7484ae44406aa48a2405f481d827198db4e8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b00c0faca3ae8bba9befb32a00b97a7854ae1a43")]
 [assembly: System.Reflection.AssemblyProductAttribute("OnlineSinavSistemi.DataAccess")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OnlineSinavSistemi.DataAccess")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
