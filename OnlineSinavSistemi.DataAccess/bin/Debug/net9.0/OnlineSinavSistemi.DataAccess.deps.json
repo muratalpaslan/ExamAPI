@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "OnlineSinavSistemi.DataAccess/1.0.0": {
+        "dependencies": {
+          "OnlineSinavSistemi.Core": "1.0.0"
+        },
+        "runtime": {
+          "OnlineSinavSistemi.DataAccess.dll": {}
+        }
+      },
+      "OnlineSinavSistemi.Core/1.0.0": {
+        "runtime": {
+          "OnlineSinavSistemi.Core.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "OnlineSinavSistemi.DataAccess/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "OnlineSinavSistemi.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

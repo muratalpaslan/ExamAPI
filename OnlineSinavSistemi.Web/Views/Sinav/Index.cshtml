@@ -1,0 +1,68 @@
+@model IEnumerable<OnlineSinavSistemi.Core.Models.Sinav>
+
+@{
+    ViewData["Title"] = "Sınavlar";
+}
+
+<div class="container">
+    <h1 class="my-4">Sınavlar</h1>
+    
+    <div class="mb-3">
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Yeni Sınav Ekle
+        </a>
+    </div>
+    
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Sistemdeki Sınavlar</h5>
+        </div>
+        <div class="card-body">
+            @if (Model != null && Model.Any())
+            {
+                <div class="row">
+                    @foreach (var sinav in Model)
+                    {
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h5 class="mb-0">@sinav.Baslik</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-2">
+                                        <strong>Sınav ID:</strong> @sinav.SinavId
+                                    </div>
+                                    <div class="mb-2">
+                                        <strong>Oluşturulma Tarihi:</strong> @sinav.OlusturulmaTarihi.ToString("dd.MM.yyyy")
+                                    </div>
+                                    <div class="mb-2">
+                                        <strong>Soru Sayısı:</strong> @(sinav.Sorular?.Count ?? 0)
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="btn-group w-100" role="group">
+                                        <a asp-action="Details" asp-route-id="@sinav.SinavId" class="btn btn-info">
+                                            <i class="bi bi-info-circle"></i> Detay
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@sinav.SinavId" class="btn btn-warning">
+                                            <i class="bi bi-pencil"></i> Düzenle
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@sinav.SinavId" class="btn btn-danger">
+                                            <i class="bi bi-trash"></i> Sil
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> Henüz sınav bulunmamaktadır.
+                </div>
+            }
+        </div>
+    </div>
+</div> 

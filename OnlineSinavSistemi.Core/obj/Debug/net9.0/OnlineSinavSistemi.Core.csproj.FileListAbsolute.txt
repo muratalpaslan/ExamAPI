@@ -1,0 +1,12 @@
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.Core/bin/Debug/net9.0/OnlineSinavSistemi.Core.deps.json
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.Core/bin/Debug/net9.0/OnlineSinavSistemi.Core.dll
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.Core/bin/Debug/net9.0/OnlineSinavSistemi.Core.pdb
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.Core/obj/Debug/net9.0/OnlineSinavSistemi.Core.GeneratedMSBuildEditorConfig.editorconfig
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.Core/obj/Debug/net9.0/OnlineSinavSistemi.Core.AssemblyInfoInputs.cache
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.Core/obj/Debug/net9.0/OnlineSinavSistemi.Core.AssemblyInfo.cs
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.Core/obj/Debug/net9.0/OnlineSinavSistemi.Core.csproj.CoreCompileInputs.cache
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.Core/obj/Debug/net9.0/OnlineSinavSistemi.Core.sourcelink.json
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.Core/obj/Debug/net9.0/OnlineSinavSistemi.Core.dll
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.Core/obj/Debug/net9.0/refint/OnlineSinavSistemi.Core.dll
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.Core/obj/Debug/net9.0/OnlineSinavSistemi.Core.pdb
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.Core/obj/Debug/net9.0/ref/OnlineSinavSistemi.Core.dll

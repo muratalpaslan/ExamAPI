@@ -1,0 +1,50 @@
+@model OnlineSinavSistemi.Core.Models.Ogrenci
+
+@{
+    ViewData["Title"] = "Öğrenci Sil";
+}
+
+<div class="container">
+    <h1 class="my-4">Öğrenci Sil</h1>
+    
+    <div class="alert alert-danger mb-4">
+        <i class="bi bi-exclamation-triangle"></i> <strong>Uyarı:</strong> Bu öğrenciyi silmek istediğinizden emin misiniz?
+        Bu işlem geri alınamaz ve öğrencinin tüm sınav sonuçları da silinecektir.
+    </div>
+
+    <div class="card">
+        <div class="card-header bg-danger text-white">
+            <h5 class="mb-0">Silinecek Öğrenci Bilgileri</h5>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">ID:</div>
+                <div class="col-md-9">@Model.Id</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">İsim:</div>
+                <div class="col-md-9">@Model.Isim</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Email:</div>
+                <div class="col-md-9">@Model.Email</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Sınıf:</div>
+                <div class="col-md-9">@Model.Sinif</div>
+            </div>
+            
+            <form asp-action="Delete" method="post" class="mt-4">
+                <input type="hidden" asp-for="Id" />
+                <div class="d-flex">
+                    <button type="submit" class="btn btn-danger me-2">
+                        <i class="bi bi-trash"></i> Sil
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> İptal
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 

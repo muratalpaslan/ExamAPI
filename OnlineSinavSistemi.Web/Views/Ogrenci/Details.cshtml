@@ -1,0 +1,68 @@
+@model OnlineSinavSistemi.Core.Models.Ogrenci
+
+@{
+    ViewData["Title"] = "Öğrenci Detayları";
+}
+
+<div class="container">
+    <h1 class="my-4">Öğrenci Detayları</h1>
+
+    <div class="card">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0">@Model.Isim</h5>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">ID:</div>
+                <div class="col-md-9">@Model.Id</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">İsim:</div>
+                <div class="col-md-9">@Model.Isim</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Email:</div>
+                <div class="col-md-9">@Model.Email</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Sınıf:</div>
+                <div class="col-md-9">@Model.Sinif</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Katıldığı Sınavlar:</div>
+                <div class="col-md-9">
+                    @if (Model.KatildigiSinavlar != null && Model.KatildigiSinavlar.Any())
+                    {
+                        <div class="alert alert-success">
+                            <i class="bi bi-check-circle"></i> Bu öğrenci toplam <strong>@Model.KatildigiSinavlar.Count</strong> sınava katılmıştır.
+                        </div>
+                        
+                        <div class="mt-2">
+                            <a asp-action="SinavSonuclari" asp-route-id="@Model.Id" class="btn btn-primary btn-sm">
+                                <i class="bi bi-search"></i> Tüm Sonuçları Görüntüle
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">
+                            <i class="bi bi-exclamation-triangle"></i> Henüz sınava katılmamış
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning me-2">
+                    <i class="bi bi-pencil"></i> Düzenle
+                </a>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Listeye Dön
+                </a>
+                <a asp-action="SinavSonuclari" asp-route-id="@Model.Id" class="btn btn-success ms-2">
+                    <i class="bi bi-graph-up"></i> Sınav Sonuçları
+                </a>
+            </div>
+        </div>
+    </div>
+</div> 

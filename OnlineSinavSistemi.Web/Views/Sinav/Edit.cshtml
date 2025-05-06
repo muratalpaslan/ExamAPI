@@ -1,0 +1,189 @@
+@model OnlineSinavSistemi.Core.Models.Sinav
+
+@{
+    ViewData["Title"] = "Sınav Düzenle";
+}
+
+<div class="container">
+    <h1 class="my-4">Sınav Düzenle</h1>
+    
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="SinavId" />
+        <input type="hidden" asp-for="OlusturulmaTarihi" />
+        
+        <div class="card mb-4">
+            <div class="card-header bg-warning text-white">
+                <h5 class="mb-0">Sınav Bilgileri</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label asp-for="Baslik" class="form-label">Sınav Başlığı</label>
+                    <input asp-for="Baslik" class="form-control" required />
+                    <span asp-validation-for="Baslik" class="text-danger"></span>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Oluşturulma Tarihi</label>
+                    <input value="@Model.OlusturulmaTarihi.ToString("dd.MM.yyyy HH:mm")" class="form-control" readonly />
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header bg-warning text-white">
+                <h5 class="mb-0">Sorular</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.Sorular != null && Model.Sorular.Any())
+                {
+                    for (var i = 0; i < Model.Sorular.Count; i++)
+                    {
+                        var soru = Model.Sorular[i];
+                        <div class="soru-grubu border p-3 mb-3 rounded">
+                            <input type="hidden" name="Sorular[@i].SoruId" value="@soru.SoruId" />
+                            
+                            <h5 class="mb-3">Soru #@(i + 1)</h5>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Soru Metni</label>
+                                <input name="Sorular[@i].Metin" value="@soru.Metin" class="form-control" required />
+                            </div>
+                            
+                            @if (soru.Secenekler != null)
+                            {
+                                for (var j = 0; j < soru.Secenekler.Count; j++)
+                                {
+                                    <div class="mb-3">
+                                        <label class="form-label">@(((char)('A' + j)).ToString()) Şıkkı</label>
+                                        <input name="Sorular[@i].Secenekler[@j]" value="@soru.Secenekler[j]" class="form-control secenek" required />
+                                    </div>
+                                }
+                            }
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Doğru Cevap</label>
+                                <select name="Sorular[@i].DogruCevap" class="form-control dogru-cevap" required>
+                                    @if (soru.Secenekler != null)
+                                    {
+                                        foreach (var secenek in soru.Secenekler)
+                                        {
+                                            if (secenek == soru.DogruCevap)
+                                            {
+                                                <option value="@secenek" selected>@secenek</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@secenek">@secenek</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> Bu sınavda henüz soru bulunmamaktadır.
+                    </div>
+                }
+                
+                <button type="button" id="yeni-soru-ekle" class="btn btn-success">
+                    <i class="bi bi-plus-circle"></i> Yeni Soru Ekle
+                </button>
+            </div>
+        </div>
+        
+        <div class="d-flex mb-5">
+            <button type="submit" class="btn btn-warning me-2">
+                <i class="bi bi-save"></i> Değişiklikleri Kaydet
+            </button>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Listeye Dön
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Yeni soru ekle butonuna tıklandığında
+            document.getElementById('yeni-soru-ekle').addEventListener('click', function() {
+                const soruContainer = document.querySelector('.card-body');
+                const soruSayisi = document.querySelectorAll('.soru-grubu').length;
+                const yeniSoruIndex = soruSayisi;
+                
+                const yeniSoruHTML = `
+                    <div class="soru-grubu border p-3 mb-3 rounded">
+                        <input type="hidden" name="Sorular[${yeniSoruIndex}].SoruId" value="0" />
+                        
+                        <h5 class="mb-3">Soru #${yeniSoruIndex + 1}</h5>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Soru Metni</label>
+                            <input name="Sorular[${yeniSoruIndex}].Metin" class="form-control" required />
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">A Şıkkı</label>
+                            <input name="Sorular[${yeniSoruIndex}].Secenekler[0]" class="form-control secenek" required />
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">B Şıkkı</label>
+                            <input name="Sorular[${yeniSoruIndex}].Secenekler[1]" class="form-control secenek" required />
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">C Şıkkı</label>
+                            <input name="Sorular[${yeniSoruIndex}].Secenekler[2]" class="form-control secenek" required />
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">D Şıkkı</label>
+                            <input name="Sorular[${yeniSoruIndex}].Secenekler[3]" class="form-control secenek" required />
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Doğru Cevap</label>
+                            <select name="Sorular[${yeniSoruIndex}].DogruCevap" class="form-control dogru-cevap" required>
+                                <option value="">Doğru cevabı seçin</option>
+                            </select>
+                        </div>
+                    </div>
+                `;
+                
+                // Ekleme yaparken butonu referans alalım
+                const ekleButton = document.getElementById('yeni-soru-ekle');
+                ekleButton.insertAdjacentHTML('beforebegin', yeniSoruHTML);
+                
+                // Yeni eklenen sorunun şık değişikliklerini dinle ve doğru cevap listesini güncelle
+                const yeniSoru = ekleButton.previousElementSibling;
+                const yeniSecenekler = yeniSoru.querySelectorAll('.secenek');
+                const dogruCevapSelect = yeniSoru.querySelector('.dogru-cevap');
+                
+                yeniSecenekler.forEach(secenek => {
+                    secenek.addEventListener('input', function() {
+                        // Doğru cevap listesini güncelle
+                        // İlk seçenek dışındaki tüm seçenekleri temizle
+                        while (dogruCevapSelect.options.length > 1) {
+                            dogruCevapSelect.remove(1);
+                        }
+                        
+                        // Girilen şıkları doğru cevap listesine ekle
+                        yeniSecenekler.forEach(s => {
+                            const deger = s.value.trim();
+                            if (deger) {
+                                dogruCevapSelect.add(new Option(deger, deger));
+                            }
+                        });
+                    });
+                });
+            });
+        });
+    </script>
+} 

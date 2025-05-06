@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Online Sınav Sistemine Hoşgeldiniz</h1>
+    <p>N-Tier mimariye dönüştürülmüş Online Sınav Sistemi projesine hoş geldiniz!</p>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4>Hızlı Erişim</h4>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a asp-controller="Sinav" asp-action="Index" class="list-group-item list-group-item-action">
+                            <i class="bi bi-journal-text"></i> Sınavları Görüntüle
+                        </a>
+                        <a asp-controller="Ogrenci" asp-action="Index" class="list-group-item list-group-item-action">
+                            <i class="bi bi-people"></i> Öğrencileri Görüntüle
+                        </a>
+                        <a asp-controller="Test" asp-action="Sinavlar" class="list-group-item list-group-item-action">
+                            <i class="bi bi-pencil"></i> Sınav Ol
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h4>Veri Yükleme</h4>
+                </div>
+                <div class="card-body">
+                    <p>Test için örnek verileri sisteme yüklemek için aşağıdaki butona tıklayabilirsiniz:</p>
+                    <button id="loadSampleDataBtn" class="btn btn-success btn-block">
+                        <i class="bi bi-database-add"></i> Örnek Verileri Yükle
+                    </button>
+                    <div id="loadResult" class="mt-3 alert" style="display:none"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#loadSampleDataBtn").click(function () {
+                $.ajax({
+                    url: '@Url.Action("LoadSampleData", "Home")',
+                    type: 'POST',
+                    success: function (result) {
+                        if (result.success) {
+                            $("#loadResult").removeClass("alert-danger").addClass("alert-success").text(result.message).show();
+                        } else {
+                            $("#loadResult").removeClass("alert-success").addClass("alert-danger").text(result.message).show();
+                        }
+                    },
+                    error: function (error) {
+                        $("#loadResult").removeClass("alert-success").addClass("alert-danger").text("İşlem sırasında bir hata oluştu.").show();
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,149 @@
+@model Tuple<OnlineSinavSistemi.Core.Models.Sinav, OnlineSinavSistemi.Core.Models.SinavCevap>
+
+@{
+    ViewData["Title"] = "Sınav Çözümü";
+    var sinav = Model.Item1;
+    var cevapModeli = Model.Item2;
+}
+
+<div class="container">
+    <h1 class="my-4">@sinav.Baslik</h1>
+    
+    <div class="alert alert-info mb-4">
+        <i class="bi bi-info-circle"></i> Tüm soruları cevapladıktan sonra formu göndererek sınav sonucunuzu görebilirsiniz.
+    </div>
+    
+    <form asp-action="SinavOl" asp-route-id="@sinav.SinavId" method="post">
+        <input type="hidden" name="SinavId" value="@sinav.SinavId" />
+        
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="mb-0">Öğrenci Bilgileriniz</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Adınız Soyadınız</label>
+                        <input type="text" class="form-control" id="ogrenciIsim" name="OgrenciIsim" required />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">E-posta</label>
+                        <input type="email" class="form-control" id="ogrenciEmail" name="OgrenciEmail" required />
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="mb-0">Sorular</h5>
+                    </div>
+                    <div class="col-auto">
+                        <span class="badge bg-light text-dark">Toplam @(sinav.Sorular?.Count ?? 0) Soru</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                @if (sinav.Sorular != null && sinav.Sorular.Any())
+                {
+                    @for (int i = 0; i < sinav.Sorular.Count; i++)
+                    {
+                        var soru = sinav.Sorular[i];
+                        <div class="mb-5">
+                            <h5 class="card-title">Soru @(i + 1): @soru.Metin</h5>
+                            
+                            <input type="hidden" name="Cevaplar[@i].SoruId" value="@soru.SoruId" />
+                            <input type="hidden" name="Cevaplar[@i].SoruNumarasi" value="@(i + 1)" />
+                            
+                            <div class="mt-3">
+                                @if (soru.Secenekler != null && soru.Secenekler.Any())
+                                {
+                                    foreach (var secenek in soru.Secenekler)
+                                    {
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="radio" 
+                                                   name="Cevaplar[@i].VerilenCevap" 
+                                                   id="secenek-@soru.SoruId-@secenek" 
+                                                   value="@secenek" required>
+                                            <label class="form-check-label" for="secenek-@soru.SoruId-@secenek">
+                                                @secenek
+                                            </label>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="alert alert-warning">
+                                        Bu soru için seçenek bulunmamaktadır.
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        
+                        @if (i < sinav.Sorular.Count - 1)
+                        {
+                            <hr class="my-4">
+                        }
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle"></i> Bu sınavda soru bulunmamaktadır.
+                    </div>
+                }
+            </div>
+            
+            <div class="card-footer">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+                    <a asp-action="Sinavlar" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Sınavlar Listesine Dön
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check-circle"></i> Sınavı Tamamla
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verileri localStorage'dan yüklüyoruz
+            const storedIsim = localStorage.getItem('ogrenciIsim');
+            const storedEmail = localStorage.getItem('ogrenciEmail');
+            
+            // Eğer localStorage'da kayıtlı isim varsa form alanını dolduruyoruz
+            if (storedIsim) {
+                document.getElementById('ogrenciIsim').value = storedIsim;
+            }
+            
+            // Eğer localStorage'da kayıtlı email varsa form alanını dolduruyoruz
+            if (storedEmail) {
+                document.getElementById('ogrenciEmail').value = storedEmail;
+            }
+            
+            // Form gönderildiğinde verileri localStorage'a kaydediyoruz
+            document.querySelector('form').addEventListener('submit', function() {
+                const isim = document.getElementById('ogrenciIsim').value;
+                const email = document.getElementById('ogrenciEmail').value;
+                
+                if (isim) {
+                    localStorage.setItem('ogrenciIsim', isim);
+                }
+                
+                if (email) {
+                    localStorage.setItem('ogrenciEmail', email);
+                }
+            });
+        });
+    </script>
+} 

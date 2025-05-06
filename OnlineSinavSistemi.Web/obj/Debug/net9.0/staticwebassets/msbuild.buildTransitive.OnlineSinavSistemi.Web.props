@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../buildMultiTargeting/OnlineSinavSistemi.Web.props" />
+</Project>

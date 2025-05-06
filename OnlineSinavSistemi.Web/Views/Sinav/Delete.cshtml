@@ -1,0 +1,50 @@
+@model OnlineSinavSistemi.Core.Models.Sinav
+
+@{
+    ViewData["Title"] = "Sınav Sil";
+}
+
+<div class="container">
+    <h1 class="my-4">Sınav Sil</h1>
+    
+    <div class="alert alert-danger mb-4">
+        <i class="bi bi-exclamation-triangle"></i> <strong>Uyarı:</strong> Bu sınavı silmek istediğinizden emin misiniz?
+        Bu işlem geri alınamaz ve sınava ait tüm sonuçlar ve katılım bilgileri de silinecektir.
+    </div>
+
+    <div class="card">
+        <div class="card-header bg-danger text-white">
+            <h5 class="mb-0">Silinecek Sınav Bilgileri</h5>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Sınav ID:</div>
+                <div class="col-md-9">@Model.SinavId</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Başlık:</div>
+                <div class="col-md-9">@Model.Baslik</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Oluşturulma Tarihi:</div>
+                <div class="col-md-9">@Model.OlusturulmaTarihi.ToString("dd.MM.yyyy HH:mm")</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Soru Sayısı:</div>
+                <div class="col-md-9">@(Model.Sorular?.Count ?? 0)</div>
+            </div>
+            
+            <form asp-action="Delete" method="post" class="mt-4">
+                <input type="hidden" asp-for="SinavId" />
+                <div class="d-flex">
+                    <button type="submit" class="btn btn-danger me-2">
+                        <i class="bi bi-trash"></i> Sil
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> İptal
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 

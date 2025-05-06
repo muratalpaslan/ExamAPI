@@ -1,0 +1,115 @@
+@model IEnumerable<OnlineSinavSistemi.Core.Models.Sonuc>
+
+@{
+    ViewData["Title"] = "Sınav Sonuçları";
+    var sonuclar = Model.OrderByDescending(s => s.Puan).ToList();
+    var birinciSonuc = sonuclar.FirstOrDefault();
+}
+
+<div class="container">
+    <h1 class="my-4">Sınav Sonuçları</h1>
+    
+    @if (birinciSonuc != null)
+    {
+        <div class="alert alert-info mb-4">
+            <i class="bi bi-info-circle"></i>
+            <strong>Sınav:</strong> #@birinciSonuc.SinavId
+        </div>
+        
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">En Yüksek Puan</h5>
+                    </div>
+                    <div class="card-body">
+                        <h3>@birinciSonuc.Puan.ToString("0.##") Puan</h3>
+                        <p class="mb-0"><strong>Öğrenci:</strong> @birinciSonuc.Ogrenci.Isim</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Ortalama Puan</h5>
+                    </div>
+                    <div class="card-body">
+                        <h3>@(sonuclar.Average(s => s.Puan).ToString("0.##")) Puan</h3>
+                        <p class="mb-0"><strong>Toplam Katılımcı:</strong> @sonuclar.Count</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Tüm Sonuçlar</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Sıralama</th>
+                                <th>Öğrenci</th>
+                                <th>Doğru</th>
+                                <th>Yanlış</th>
+                                <th>Puan</th>
+                                <th>Tarih</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < sonuclar.Count; i++)
+                            {
+                                var sonuc = sonuclar[i];
+                                <tr>
+                                    <td>
+                                        @if (i == 0)
+                                        {
+                                            <span class="badge bg-warning text-dark">
+                                                <i class="bi bi-trophy"></i> 1
+                                            </span>
+                                        }
+                                        else if (i == 1)
+                                        {
+                                            <span class="badge bg-secondary">
+                                                <i class="bi bi-trophy"></i> 2
+                                            </span>
+                                        }
+                                        else if (i == 2)
+                                        {
+                                            <span class="badge bg-danger">
+                                                <i class="bi bi-trophy"></i> 3
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-light text-dark">@(i + 1)</span>
+                                        }
+                                    </td>
+                                    <td>@sonuc.Ogrenci.Isim</td>
+                                    <td>@sonuc.DogruSayisi</td>
+                                    <td>@sonuc.YanlisSayisi</td>
+                                    <td>@sonuc.Puan.ToString("0.##")</td>
+                                    <td>@sonuc.TamamlanmaTarihi.ToString("dd.MM.yyyy HH:mm")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> Henüz bu sınav için sonuç bulunmamaktadır.
+        </div>
+    }
+    
+    <div class="d-grid gap-2 d-md-flex">
+        <a asp-action="Sinavlar" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Sınav Listesine Dön
+        </a>
+    </div>
+</div> 

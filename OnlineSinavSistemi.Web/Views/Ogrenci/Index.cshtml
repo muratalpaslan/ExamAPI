@@ -1,0 +1,81 @@
+@model IEnumerable<OnlineSinavSistemi.Core.Models.Ogrenci>
+
+@{
+    ViewData["Title"] = "Öğrenciler";
+}
+
+<div class="container">
+    <h1 class="my-4">Öğrenci Listesi</h1>
+    
+    <div class="mb-3">
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-person-plus"></i> Yeni Öğrenci Ekle
+        </a>
+    </div>
+    
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Sistemdeki Öğrenciler</h5>
+        </div>
+        <div class="card-body">
+            @if (Model != null && Model.Any())
+            {
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>İsim</th>
+                            <th>Email</th>
+                            <th>Sınıf</th>
+                            <th>Katıldığı Sınavlar</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var ogrenci in Model)
+                        {
+                            <tr>
+                                <td>@ogrenci.Id</td>
+                                <td>@ogrenci.Isim</td>
+                                <td>@ogrenci.Email</td>
+                                <td>@ogrenci.Sinif</td>
+                                <td>
+                                    @if (ogrenci.KatildigiSinavlar != null && ogrenci.KatildigiSinavlar.Any())
+                                    {
+                                        @string.Join(", ", ogrenci.KatildigiSinavlar)
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Henüz sınava katılmamış</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a asp-action="Details" asp-route-id="@ogrenci.Id" class="btn btn-info btn-sm">
+                                            <i class="bi bi-info-circle"></i> Detay
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@ogrenci.Id" class="btn btn-warning btn-sm">
+                                            <i class="bi bi-pencil"></i> Düzenle
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@ogrenci.Id" class="btn btn-danger btn-sm">
+                                            <i class="bi bi-trash"></i> Sil
+                                        </a>
+                                        <a asp-action="SinavSonuclari" asp-route-id="@ogrenci.Id" class="btn btn-success btn-sm">
+                                            <i class="bi bi-graph-up"></i> Sonuçlar
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> Henüz öğrenci kaydı bulunmamaktadır.
+                </div>
+            }
+        </div>
+    </div>
+</div> 

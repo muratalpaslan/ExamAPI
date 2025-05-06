@@ -1,0 +1,68 @@
+@model IEnumerable<OnlineSinavSistemi.Core.Models.Sonuc>
+
+@{
+    ViewData["Title"] = "Öğrenci Sınav Sonuçları";
+    var ogrenci = Model?.FirstOrDefault()?.Ogrenci;
+}
+
+<div class="container">
+    <h1 class="my-4">Sınav Sonuçları</h1>
+    
+    @if (ogrenci != null)
+    {
+        <div class="alert alert-info mb-4">
+            <strong>Öğrenci:</strong> @ogrenci.Isim (@ogrenci.Email)
+        </div>
+    }
+    
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Katıldığı Sınavlar ve Sonuçları</h5>
+        </div>
+        <div class="card-body">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Sınav ID</th>
+                                <th>Doğru Sayısı</th>
+                                <th>Yanlış Sayısı</th>
+                                <th>Puan</th>
+                                <th>Tamamlanma Tarihi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var sonuc in Model)
+                            {
+                                <tr>
+                                    <td>@sonuc.SinavId</td>
+                                    <td>@sonuc.DogruSayisi</td>
+                                    <td>@sonuc.YanlisSayisi</td>
+                                    <td>@sonuc.Puan.ToString("0.##")</td>
+                                    <td>@sonuc.TamamlanmaTarihi.ToString("dd.MM.yyyy HH:mm")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> Bu öğrenciye ait sınav sonucu bulunmamaktadır.
+                </div>
+            }
+        </div>
+    </div>
+    
+    <div class="mt-3">
+        <a asp-action="Details" asp-route-id="@(ogrenci?.Id ?? 0)" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Öğrenci Detayına Dön
+        </a>
+        <a asp-action="Index" class="btn btn-primary ms-2">
+            <i class="bi bi-list"></i> Öğrenci Listesine Dön
+        </a>
+    </div>
+</div> 

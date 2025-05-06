@@ -1,0 +1,95 @@
+@model OnlineSinavSistemi.Core.Models.Sinav
+
+@{
+    ViewData["Title"] = "Sınav Detayı";
+}
+
+<div class="container">
+    <h1 class="my-4">Sınav Detayı</h1>
+
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0">@Model.Baslik</h5>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Sınav ID:</div>
+                <div class="col-md-9">@Model.SinavId</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Başlık:</div>
+                <div class="col-md-9">@Model.Baslik</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Oluşturulma Tarihi:</div>
+                <div class="col-md-9">@Model.OlusturulmaTarihi.ToString("dd.MM.yyyy HH:mm")</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Soru Sayısı:</div>
+                <div class="col-md-9">@(Model.Sorular?.Count ?? 0)</div>
+            </div>
+
+            <div class="mt-4">
+                <a asp-action="Edit" asp-route-id="@Model.SinavId" class="btn btn-warning me-2">
+                    <i class="bi bi-pencil"></i> Düzenle
+                </a>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Listeye Dön
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="mb-3">Sorular</h2>
+
+    @if (Model.Sorular != null && Model.Sorular.Any())
+    {
+        <div class="accordion" id="accordionSorular">
+            @foreach (var soru in Model.Sorular)
+            {
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading@(soru.SoruId)">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse@(soru.SoruId)" aria-expanded="false" aria-controls="collapse@(soru.SoruId)">
+                            <strong>Soru @soru.SoruId:</strong> @(soru.Metin.Length > 50 ? soru.Metin.Substring(0, 50) + "..." : soru.Metin)
+                        </button>
+                    </h2>
+                    <div id="collapse@(soru.SoruId)" class="accordion-collapse collapse" aria-labelledby="heading@(soru.SoruId)" data-bs-parent="#accordionSorular">
+                        <div class="accordion-body">
+                            <p><strong>Soru:</strong> @soru.Metin</p>
+                            
+                            <p><strong>Seçenekler:</strong></p>
+                            @if (soru.Secenekler != null && soru.Secenekler.Any())
+                            {
+                                <ul class="list-group mb-3">
+                                    @foreach (var secenek in soru.Secenekler)
+                                    {
+                                        if (secenek == soru.DogruCevap)
+                                        {
+                                            <li class="list-group-item list-group-item-success">
+                                                @secenek <span class="badge bg-success ms-2">Doğru Cevap</span>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="list-group-item">@secenek</li>
+                                        }
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <p class="text-muted">Bu soruda seçenek bulunmamaktadır.</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle"></i> Bu sınavda henüz soru bulunmamaktadır.
+        </div>
+    }
+</div> 

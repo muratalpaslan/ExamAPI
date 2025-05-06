@@ -1,0 +1,16 @@
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.DataAccess/bin/Debug/net9.0/OnlineSinavSistemi.DataAccess.deps.json
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.DataAccess/bin/Debug/net9.0/OnlineSinavSistemi.DataAccess.dll
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.DataAccess/bin/Debug/net9.0/OnlineSinavSistemi.DataAccess.pdb
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.DataAccess/bin/Debug/net9.0/OnlineSinavSistemi.Core.dll
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.DataAccess/bin/Debug/net9.0/OnlineSinavSistemi.Core.pdb
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.DataAccess/obj/Debug/net9.0/OnlineSinavSistemi.DataAccess.csproj.AssemblyReference.cache
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.DataAccess/obj/Debug/net9.0/OnlineSinavSistemi.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.DataAccess/obj/Debug/net9.0/OnlineSinavSistemi.DataAccess.AssemblyInfoInputs.cache
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.DataAccess/obj/Debug/net9.0/OnlineSinavSistemi.DataAccess.AssemblyInfo.cs
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.DataAccess/obj/Debug/net9.0/OnlineSinavSistemi.DataAccess.csproj.CoreCompileInputs.cache
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.DataAccess/obj/Debug/net9.0/OnlineSinavSistemi.DataAccess.sourcelink.json
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.DataAccess/obj/Debug/net9.0/OnlineSi.44D576A3.Up2Date
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.DataAccess/obj/Debug/net9.0/OnlineSinavSistemi.DataAccess.dll
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.DataAccess/obj/Debug/net9.0/refint/OnlineSinavSistemi.DataAccess.dll
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.DataAccess/obj/Debug/net9.0/OnlineSinavSistemi.DataAccess.pdb
+/Users/murat/Desktop/ExamAPI/OnlineSinavSistemi.DataAccess/obj/Debug/net9.0/ref/OnlineSinavSistemi.DataAccess.dll
