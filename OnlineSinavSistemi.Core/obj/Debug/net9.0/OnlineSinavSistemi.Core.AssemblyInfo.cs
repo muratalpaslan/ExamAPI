@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OnlineSinavSistemi.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4b77118d045bd7414ba9239af71f973688ec2e63")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c0a3feab9a612aca6792290ca1a3180e8bcdd12d")]
 [assembly: System.Reflection.AssemblyProductAttribute("OnlineSinavSistemi.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OnlineSinavSistemi.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
