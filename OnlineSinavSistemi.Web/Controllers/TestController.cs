@@ -87,7 +87,23 @@ namespace OnlineSinavSistemi.Web.Controllers
                         
                         if (mevcutOgrenci != null)
                         {
-                            sinavCevap.OgrenciId = mevcutOgrenci.Id;
+                            // Öğrenci daha önce bu sınava girmiş mi kontrol et
+                            if (mevcutOgrenci.KatildigiSinavlar.Contains(id))
+                            {
+                                ModelState.AddModelError("", "Bu sınava daha önce katıldınız. Her sınava sadece bir kez katılabilirsiniz.");
+                                return await SinavOl(id); // Sınavı tekrar yükle
+                            }
+
+                            sinavCevap.OgrenciId = mevcutOgrenci.OgrenciId;
+                            
+                            // Öğrencinin sınıf bilgisini güncelle
+                            if (!string.IsNullOrEmpty(sinavCevap.OgrenciSinif))
+                            {
+                                mevcutOgrenci.Sinif = sinavCevap.OgrenciSinif;
+                                var ogrenciJson = JsonSerializer.Serialize(mevcutOgrenci);
+                                var ogrenciRequestContent = new StringContent(ogrenciJson, Encoding.UTF8, "application/json");
+                                await _httpClient.PutAsync($"{_apiBaseUrl}/api/ogrenci/{mevcutOgrenci.OgrenciId}", ogrenciRequestContent);
+                            }
                         }
                         else
                         {
@@ -96,7 +112,7 @@ namespace OnlineSinavSistemi.Web.Controllers
                             {
                                 Isim = sinavCevap.OgrenciIsim,
                                 Email = sinavCevap.OgrenciEmail,
-                                Sinif = "Belirtilmedi"
+                                Sinif = sinavCevap.OgrenciSinif ?? "Belirtilmedi"
                             };
                             
                             var ogrenciJson = JsonSerializer.Serialize(yeniOgrenci);
@@ -109,7 +125,7 @@ namespace OnlineSinavSistemi.Web.Controllers
                                 var eklenenOgrenci = JsonSerializer.Deserialize<Ogrenci>(yeniOgrenciContent, 
                                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                                 
-                                sinavCevap.OgrenciId = eklenenOgrenci?.Id ?? 0;
+                                sinavCevap.OgrenciId = eklenenOgrenci?.OgrenciId ?? 0;
                             }
                         }
                     }

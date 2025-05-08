@@ -56,6 +56,16 @@ namespace OnlineSinavSistemi.Business.Services
             var ogrenci = _unitOfWork.Ogrenciler.GetById(ogrenciId);
             if (ogrenci != null)
             {
+                // Öğrencinin sınav sonuçlarını al
+                var sonuclar = _unitOfWork.Sonuclar.GetSonuclarByOgrenciId(ogrenciId);
+                
+                // Sınav sonuçlarını sil
+                if (sonuclar != null && sonuclar.Any())
+                {
+                    _unitOfWork.Sonuclar.RemoveRange(sonuclar);
+                }
+
+                // Öğrenciyi sil
                 _unitOfWork.Ogrenciler.Remove(ogrenci);
                 _unitOfWork.Complete();
             }

@@ -26,13 +26,17 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-4 mb-3">
                         <label class="form-label">Adınız Soyadınız</label>
                         <input type="text" class="form-control" id="ogrenciIsim" name="OgrenciIsim" required />
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-4 mb-3">
                         <label class="form-label">E-posta</label>
                         <input type="email" class="form-control" id="ogrenciEmail" name="OgrenciEmail" required />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Sınıfınız</label>
+                        <input type="text" class="form-control" id="ogrenciSinif" name="OgrenciSinif" required />
                     </div>
                 </div>
             </div>
@@ -120,6 +124,7 @@
             // Verileri localStorage'dan yüklüyoruz
             const storedIsim = localStorage.getItem('ogrenciIsim');
             const storedEmail = localStorage.getItem('ogrenciEmail');
+            const storedSinif = localStorage.getItem('ogrenciSinif');
             
             // Eğer localStorage'da kayıtlı isim varsa form alanını dolduruyoruz
             if (storedIsim) {
@@ -130,11 +135,17 @@
             if (storedEmail) {
                 document.getElementById('ogrenciEmail').value = storedEmail;
             }
+
+            // Eğer localStorage'da kayıtlı sınıf varsa form alanını dolduruyoruz
+            if (storedSinif) {
+                document.getElementById('ogrenciSinif').value = storedSinif;
+            }
             
             // Form gönderildiğinde verileri localStorage'a kaydediyoruz
             document.querySelector('form').addEventListener('submit', function() {
                 const isim = document.getElementById('ogrenciIsim').value;
                 const email = document.getElementById('ogrenciEmail').value;
+                const sinif = document.getElementById('ogrenciSinif').value;
                 
                 if (isim) {
                     localStorage.setItem('ogrenciIsim', isim);
@@ -142,6 +153,10 @@
                 
                 if (email) {
                     localStorage.setItem('ogrenciEmail', email);
+                }
+
+                if (sinif) {
+                    localStorage.setItem('ogrenciSinif', sinif);
                 }
             });
         });

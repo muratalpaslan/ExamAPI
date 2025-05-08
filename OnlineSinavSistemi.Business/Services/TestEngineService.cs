@@ -75,7 +75,9 @@ namespace OnlineSinavSistemi.Business.Services
             {
                 Ogrenci = ogrenci,
                 OgrenciId = ogrenci.Id,
+                OgrenciSinif = cevaplar.OgrenciSinif,
                 SinavId = sinavId,
+                SinavBaslik = sinav.Baslik,
                 DogruSayisi = dogruSayisi,
                 YanlisSayisi = yanlisSayisi,
                 Puan = sinav.Sorular.Count > 0 ? (double)dogruSayisi * 100 / sinav.Sorular.Count : 0

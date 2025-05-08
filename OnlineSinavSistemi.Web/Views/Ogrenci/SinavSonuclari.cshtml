@@ -26,7 +26,7 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Sınav ID</th>
+                                <th>Sınav</th>
                                 <th>Doğru Sayısı</th>
                                 <th>Yanlış Sayısı</th>
                                 <th>Puan</th>
@@ -37,7 +37,9 @@
                             @foreach (var sonuc in Model)
                             {
                                 <tr>
-                                    <td>@sonuc.SinavId</td>
+                                    <td>@(string.IsNullOrEmpty(sonuc.SinavBaslik) ? 
+                                        sonuc.SinavId.ToString() : 
+                                        sonuc.SinavBaslik.Split(' ')[0])</td>
                                     <td>@sonuc.DogruSayisi</td>
                                     <td>@sonuc.YanlisSayisi</td>
                                     <td>@sonuc.Puan.ToString("0.##")</td>

@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace OnlineSinavSistemi.Web.Controllers
 {
@@ -17,28 +18,56 @@ namespace OnlineSinavSistemi.Web.Controllers
         private readonly IOgrenciService _ogrenciService;
         private readonly HttpClient _httpClient;
         private readonly string _apiBaseUrl;
+        private readonly JsonSerializerOptions _jsonOptions;
+        private readonly ILogger<OgrenciController> _logger;
 
-        public OgrenciController(IOgrenciService ogrenciService, IConfiguration configuration, IHttpClientFactory httpClientFactory)
+        public OgrenciController(IOgrenciService ogrenciService, IConfiguration configuration, IHttpClientFactory httpClientFactory, ILogger<OgrenciController> logger)
         {
             _ogrenciService = ogrenciService;
             _httpClient = httpClientFactory.CreateClient();
-            _apiBaseUrl = configuration.GetValue<string>("ApiSettings:BaseUrl");
+            _apiBaseUrl = configuration.GetValue<string>("ApiSettings:BaseUrl") ?? throw new ArgumentNullException(nameof(configuration), "API Base URL is not configured");
+            _jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            _logger = logger;
         }
 
         // GET: Ogrenci
         public async Task<IActionResult> Index()
         {
-            var response = await _httpClient.GetAsync($"{_apiBaseUrl}/api/ogrenci");
-            
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var content = await response.Content.ReadAsStringAsync();
-                var ogrenciler = JsonSerializer.Deserialize<IEnumerable<Ogrenci>>(content, 
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                return View(ogrenciler);
+                // Tüm sınavları getir
+                var sinavlarResponse = await _httpClient.GetAsync($"{_apiBaseUrl}/api/sinav");
+                if (sinavlarResponse.IsSuccessStatusCode)
+                {
+                    var sinavlarJson = await sinavlarResponse.Content.ReadAsStringAsync();
+                    var sinavlar = JsonSerializer.Deserialize<List<Sinav>>(sinavlarJson, _jsonOptions);
+                    
+                    if (sinavlar != null)
+                    {
+                        // Sınav ID'lerini ve başlıklarını bir sözlükte sakla
+                        ViewBag.Sinavlar = sinavlar.ToDictionary(
+                            s => s.SinavId,
+                            s => s.Baslik.Split(' ')[0] // Sınav başlığının ilk kelimesini al
+                        );
+                    }
+                }
+
+                // Öğrencileri getir
+                var response = await _httpClient.GetAsync($"{_apiBaseUrl}/api/ogrenci");
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    var ogrenciler = JsonSerializer.Deserialize<IEnumerable<Ogrenci>>(json, _jsonOptions);
+                    return View(ogrenciler ?? new List<Ogrenci>());
+                }
+
+                return View(new List<Ogrenci>());
             }
-            
-            return View(new List<Ogrenci>());
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Öğrenci listesi alınırken hata oluştu");
+                return View(new List<Ogrenci>());
+            }
         }
 
         // GET: Ogrenci/Details/5
@@ -183,6 +212,16 @@ namespace OnlineSinavSistemi.Web.Controllers
             var ogrenci = JsonSerializer.Deserialize<Ogrenci>(ogrenciContent,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             
+            // Tüm sınavları alıyoruz
+            var sinavResponse = await _httpClient.GetAsync($"{_apiBaseUrl}/api/sinav");
+            var sinavlar = new List<Sinav>();
+            if (sinavResponse.IsSuccessStatusCode)
+            {
+                var sinavContent = await sinavResponse.Content.ReadAsStringAsync();
+                sinavlar = JsonSerializer.Deserialize<List<Sinav>>(sinavContent,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            
             // Tüm sonuçları alıyoruz
             var sonucResponse = await _httpClient.GetAsync($"{_apiBaseUrl}/api/test/sonuclar");
             
@@ -197,10 +236,15 @@ namespace OnlineSinavSistemi.Web.Controllers
                     .Where(s => s.OgrenciId == id)
                     .ToList();
 
-                // Öğrenci bilgisini her sonuca ekle
+                // Öğrenci ve sınav bilgilerini her sonuca ekle
                 foreach (var sonuc in ogrenciSonuclari)
                 {
                     sonuc.Ogrenci = ogrenci;
+                    var sinav = sinavlar.FirstOrDefault(s => s.SinavId == sonuc.SinavId);
+                    if (sinav != null)
+                    {
+                        sonuc.SinavBaslik = sinav.Baslik;
+                    }
                 }
                 
                 ViewBag.Ogrenci = ogrenci;
